@@ -1,0 +1,81 @@
+name: Zbuduj Cleanily APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "web/**"
+      - "assets/**"
+      - "src/**"
+      - "package.json"
+      - "capacitor.config.json"
+      - ".github/workflows/build-apk.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    name: Zbuduj instalacyjny APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v6
+
+      - name: Skonfiguruj Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Skonfiguruj Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Zainstaluj zależności Capacitor
+        run: npm install --no-audit --no-fund
+
+      - name: Zbuduj most do galerii Androida
+        run: npm run build:native-bridge
+
+      - name: Utwórz projekt Android
+        run: npx cap add android
+
+      - name: Wygeneruj ikony aplikacji
+        run: >-
+          npx capacitor-assets generate --android
+          --iconBackgroundColor '#009fe8'
+          --iconBackgroundColorDark '#0878df'
+          --splashBackgroundColor '#0a0f1c'
+          --splashBackgroundColorDark '#0a0f1c'
+
+      - name: Synchronizuj aplikację webową
+        run: npx cap sync android
+
+      - name: Zbuduj debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Przygotuj plik wynikowy
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/Cleanily.apk
+
+      - name: Udostępnij APK do pobrania
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cleanily-APK
+          path: dist/Cleanily.apk
+          if-no-files-found: error
+          retention-days: 30
