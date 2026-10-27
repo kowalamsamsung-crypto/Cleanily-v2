@@ -1,6 +1,6 @@
 # Cleanily — Laboratorium OQC WM (Android APK)
 
-Gotowy projekt GitHub do automatycznego zbudowania instalacyjnego pliku APK aplikacji **Cleanily**. Aplikacja działa offline, zapisuje zdjęcia lokalnie i zapisuje końcowy raport JPG w układzie 2 × 3 bezpośrednio w albumie **Cleanily** w galerii telefonu. Projekt zawiera gotową ikonę Androida opartą na niebieskim znaku ze szczotką i miotełką.
+Gotowy projekt GitHub do automatycznego zbudowania instalacyjnego pliku APK aplikacji **Cleanily**. Aplikacja działa offline, zapisuje zdjęcia lokalnie, zapisuje końcowy raport JPG w układzie 2 × 3 bezpośrednio w albumie **Cleanily** w galerii telefonu i pozwala udostępnić go do innych aplikacji. Projekt zawiera gotową ikonę Androida opartą na niebieskim znaku ze szczotką i miotełką.
 
 ## Najprostszy sposób zbudowania APK na GitHubie
 
@@ -66,6 +66,10 @@ Edytuj `web/index.html`, zatwierdź zmianę na gałęzi `main`, a GitHub automat
 ## Zapisywanie raportu w galerii
 
 W aplikacji Android przycisk **Zapisz raport w galerii** tworzy album `Cleanily` i umieszcza w nim końcowy plik JPG. Funkcję zapewnia `@capacitor-community/media` w wersji zgodnej z Capacitor 8. W zwykłej przeglądarce aplikacja korzysta z awaryjnego pobierania pliku.
+
+## Udostępnianie raportu
+
+Przycisk **Udostępnij raport** tworzy tymczasowy plik JPG i otwiera systemowe menu Androida. Raport można wysłać m.in. przez pocztę, komunikator, Teams lub zapisać w innej aplikacji. Po zamknięciu menu plik tymczasowy jest usuwany. Funkcja korzysta z oficjalnych wtyczek `@capacitor/filesystem` i `@capacitor/share`.
 
 ## Budowanie lokalne
 
