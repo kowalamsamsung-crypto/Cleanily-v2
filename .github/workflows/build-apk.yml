@@ -44,7 +44,7 @@ jobs:
       - name: Zainstaluj zależności Capacitor
         run: npm install --no-audit --no-fund
 
-      - name: Zbuduj most do galerii Androida
+      - name: Zbuduj most do galerii i udostępniania Androida
         run: npm run build:native-bridge
 
       - name: Utwórz projekt Android
