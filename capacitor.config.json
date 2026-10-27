@@ -1,0 +1,11 @@
+{
+  "appId": "com.oqcwm.cleanily",
+  "appName": "Cleanily",
+  "webDir": "web",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
